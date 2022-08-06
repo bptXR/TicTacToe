@@ -12,6 +12,7 @@ public enum TicTacToeState
 [System.Serializable]
 public class WinnerEvent : UnityEvent<int>
 {
+    
 }
 
 public class TicTacToeAI : MonoBehaviour
@@ -70,6 +71,7 @@ public class TicTacToeAI : MonoBehaviour
         currentRound++;
         
         print("Player has selected");
+        CheckForWin();
     }
 
     private void AiSelects(int coordX, int coordY)
@@ -79,6 +81,7 @@ public class TicTacToeAI : MonoBehaviour
         currentRound++;
         
         print("AI has selected");
+        CheckForWin();
     }
 
     private void SetVisual(int coordX, int coordY, TicTacToeState targetState)
@@ -94,25 +97,76 @@ public class TicTacToeAI : MonoBehaviour
     {
         if (_aiLevel == 0)
         {
-            bool foundEmptySpot = false;
+            var foundEmptySpot = false;
 
             while (!foundEmptySpot)
             {
-                int randomNumber = Random.Range(0, 9);
+                var randomNumber = Random.Range(0, 9);
 
                 var gridField = grid[randomNumber].GetComponent<ClickTrigger>();
 
-                if (gridField.canClick)
-                {
-                    AiSelects(gridField.myCoordX, gridField.myCoordY);
-                    gridField.canClick = false;
-                    foundEmptySpot = true;
-                }
+                if (!gridField.canClick) continue;
+                AiSelects(gridField.myCoordX, gridField.myCoordY);
+                gridField.canClick = false;
+                foundEmptySpot = true;
             }
         }
         else
         {
             AiSelects(2, 2);
         }
+    }
+
+    private void CheckForWin()
+    {
+        // Horizontal
+        // First Row
+        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer && grid[1].GetComponent<ClickTrigger>().filledByPlayer && grid[2].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        // Middle Row
+        if (grid[3].GetComponent<ClickTrigger>().filledByPlayer && grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[5].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        // Bottom Row
+        if (grid[6].GetComponent<ClickTrigger>().filledByPlayer && grid[7].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        
+        // Vertical
+        // First Column
+        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer && grid[3].GetComponent<ClickTrigger>().filledByPlayer && grid[6].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        // Second Column
+        if (grid[1].GetComponent<ClickTrigger>().filledByPlayer && grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[7].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        // Third Column
+        if (grid[2].GetComponent<ClickTrigger>().filledByPlayer && grid[5].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+        
+        // Diagonal
+        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer && grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            GameWin();
+        }
+    }
+
+    private void GameWin()
+    {
+        foreach (var t in grid)
+        {
+            t.GetComponent<ClickTrigger>().canClick = false;
+        }
+        //onPlayerWin.Invoke(0);
+        print("Player Won");
     }
 }

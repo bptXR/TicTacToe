@@ -426,6 +426,7 @@ MonoBehaviour:
   myCoordX: 2
   myCoordY: 0
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &438058092
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -486,6 +487,7 @@ MonoBehaviour:
   myCoordX: 1
   myCoordY: 0
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &488615362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -546,6 +548,7 @@ MonoBehaviour:
   myCoordX: 2
   myCoordY: 1
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &498521339
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -751,6 +754,7 @@ MonoBehaviour:
   myCoordX: 2
   myCoordY: 2
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &704061768
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1173,6 +1177,7 @@ MonoBehaviour:
   myCoordX: 0
   myCoordY: 1
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &869827074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1334,6 +1339,7 @@ MonoBehaviour:
   myCoordX: 0
   myCoordY: 0
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &933829468
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1803,6 +1809,7 @@ MonoBehaviour:
   myCoordX: 1
   myCoordY: 1
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &1115226685
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1898,7 +1905,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1282022453}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1282022455}
+        m_MethodName: Retry
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1282022453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1995,6 +2013,7 @@ MonoBehaviour:
   myCoordX: 0
   myCoordY: 2
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &1300775588
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2055,6 +2074,7 @@ MonoBehaviour:
   myCoordX: 1
   myCoordY: 2
   canClick: 0
+  filledByPlayer: 0
 --- !u!65 &1375841068
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class ClickTrigger : MonoBehaviour
 	public int myCoordX;
 	public int myCoordY;
 	public bool canClick;
+	public bool filledByPlayer;
 
 	private void Awake()
 	{
@@ -35,6 +36,7 @@ public class ClickTrigger : MonoBehaviour
 		if (!canClick || !_ai.isPlayerTurn && _ai.currentRound <= 9) return;
 		_ai.PlayerSelects(myCoordX, myCoordY);
 		canClick = false;
+		filledByPlayer = true;
 		if(_ai.currentRound < 9) _ai.CalculateMove();
 	}
 }
