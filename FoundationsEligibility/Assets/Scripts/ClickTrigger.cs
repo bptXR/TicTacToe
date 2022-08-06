@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ClickTrigger : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ClickTrigger : MonoBehaviour
 	public int myCoordY;
 	public bool canClick;
 	public bool filledByPlayer;
+	public bool filledByAI;
 
 	private void Awake()
 	{
