@@ -4,9 +4,9 @@ public class ClickTrigger : MonoBehaviour
 {
 	private TicTacToeAI _ai;
 
-	[SerializeField] private int myCoordX;
-	[SerializeField] private int myCoordY;
-	[SerializeField] private bool canClick;
+	public int myCoordX;
+	public int myCoordY;
+	public bool canClick;
 
 	private void Awake()
 	{
@@ -32,9 +32,9 @@ public class ClickTrigger : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		if (!canClick || !_ai.isPlayerTurn) return;
+		if (!canClick || !_ai.isPlayerTurn && _ai.currentRound <= 9) return;
 		_ai.PlayerSelects(myCoordX, myCoordY);
 		canClick = false;
-		_ai.CalculateMove();
+		if(_ai.currentRound < 9) _ai.CalculateMove();
 	}
 }
