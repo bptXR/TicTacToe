@@ -30,9 +30,11 @@ public class TicTacToeAI : MonoBehaviour
     [SerializeField] private GameObject xPrefab;
     [SerializeField] private GameObject oPrefab;
     [SerializeField] private GameObject[] grid;
-    
+
     private int _aiLevel;
     private ClickTrigger[,] _triggers;
+    public bool playerWin;
+    public bool aiWin;
 
     private void Awake()
     {
@@ -71,6 +73,7 @@ public class TicTacToeAI : MonoBehaviour
 
     private void AiSelects(int coordX, int coordY)
     {
+        if (playerWin) return;
         SetVisual(coordX, coordY, aiState);
         isPlayerTurn = true;
         currentRound++;
@@ -114,64 +117,130 @@ public class TicTacToeAI : MonoBehaviour
         // First Row
         if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[1].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[2].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[2].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[1].GetComponent<ClickTrigger>().filledByAI &&
-            grid[2].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[2].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Middle Row
         if (grid[3].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[4].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[5].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[5].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[3].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-            grid[5].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[5].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Bottom Row
         if (grid[6].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[7].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[8].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[6].GetComponent<ClickTrigger>().filledByAI && grid[7].GetComponent<ClickTrigger>().filledByAI &&
-            grid[8].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Vertical
         // First Column
         if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[3].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[6].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[6].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[3].GetComponent<ClickTrigger>().filledByAI &&
-            grid[6].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[6].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Second Column
         if (grid[1].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[4].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[7].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[7].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[1].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-            grid[7].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[7].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Third Column
         if (grid[2].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[5].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[8].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[2].GetComponent<ClickTrigger>().filledByAI && grid[5].GetComponent<ClickTrigger>().filledByAI &&
-            grid[8].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Diagonal
         // Left to Right
         if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[4].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[8].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-            grid[8].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
 
         // Right to Left
         if (grid[2].GetComponent<ClickTrigger>().filledByPlayer &&
             grid[4].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[6].GetComponent<ClickTrigger>().filledByPlayer) onPlayerWin.Invoke(0);
+            grid[6].GetComponent<ClickTrigger>().filledByPlayer)
+        {
+            onPlayerWin.Invoke(0);
+            playerWin = true;
+        }
         else if (grid[2].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-            grid[6].GetComponent<ClickTrigger>().filledByAI) onPlayerWin.Invoke(1);
+                 grid[6].GetComponent<ClickTrigger>().filledByAI)
+        {
+            onPlayerWin.Invoke(1);
+            aiWin = true;
+        }
+        
+        else if (currentRound == maxRounds + 1 && !playerWin && !aiWin) onPlayerWin.Invoke(-1);
     }
 
     private void CheckForTie()
     {
-        if (currentRound == maxRounds + 1) onPlayerWin.Invoke(-1);
+        //if (currentRound == maxRounds + 1 && !playerWin && !aiWin) onPlayerWin.Invoke(-1);
     }
 }

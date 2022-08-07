@@ -36,9 +36,9 @@ public class ClickTrigger : MonoBehaviour
 	private void OnMouseDown()
 	{
 		if (!canClick || !_ai.isPlayerTurn) return;
-		_ai.PlayerSelects(myCoordX, myCoordY);
 		canClick = false;
 		filledByPlayer = true;
-		if(_ai.currentRound < 9) _ai.CalculateMove();
+		_ai.PlayerSelects(myCoordX, myCoordY);
+		if(_ai.currentRound < 9 && !_ai.playerWin) _ai.CalculateMove();
 	}
 }
