@@ -1,2 +1,2 @@
 # Tic Tac Toe AI
-XR Bootcamp Eligibility Test- Roberto Coviello
+XR Bootcamp Eligibility Test - Roberto Coviello
