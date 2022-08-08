@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 public enum TicTacToeState
@@ -16,10 +15,9 @@ public class WinnerEvent : UnityEvent<int>
 
 public class TicTacToeAI : MonoBehaviour
 {
-    TicTacToeState[,] _boardState;
-
     //Call This event with the player number to denote the winner
     public WinnerEvent onPlayerWin;
+
     public UnityEvent onGameStarted;
     public bool isPlayerTurn;
     public int maxRounds = 9;
@@ -29,19 +27,17 @@ public class TicTacToeAI : MonoBehaviour
     [SerializeField] private TicTacToeState playerState = TicTacToeState.Circle;
     [SerializeField] private GameObject xPrefab;
     [SerializeField] private GameObject oPrefab;
-    [SerializeField] private GameObject[] grid;
 
+    private TicTacToeState[,] _boardState;
     private int _aiLevel;
+    private int _gridSize = 3;
     private ClickTrigger[,] _triggers;
     public bool playerWin;
     public bool aiWin;
 
     private void Awake()
     {
-        if (onPlayerWin == null)
-        {
-            onPlayerWin = new WinnerEvent();
-        }
+        if (onPlayerWin == null) onPlayerWin = new WinnerEvent();
     }
 
     public void StartAI(int aiLevel)
@@ -88,24 +84,242 @@ public class TicTacToeAI : MonoBehaviour
     public void CalculateMove()
     {
         if (_aiLevel == 0)
+            CheckGridEasy();
+        else
+            CheckGridHard();
+    }
+
+    private void CheckGridEasy()
+    {
+        bool foundEmptySpot = false;
+
+        while (!foundEmptySpot)
         {
-            var foundEmptySpot = false;
+            int randomRow = Random.Range(0, 9);
+            int randomCol = Random.Range(0, 9);
 
-            while (!foundEmptySpot)
+            if (!_triggers[randomRow, randomCol].canClick) continue;
+            _triggers[randomRow, randomCol].canClick = false;
+            _triggers[randomRow, randomCol].filledByAI = true;
+            AiSelects(randomRow, randomCol);
+            foundEmptySpot = true;
+        }
+    }
+
+    private void CheckGridHard()
+    {
+        // AI Hard Mode
+        // AI Check
+        // Rows
+        for (int row = 0; row < _gridSize; row++)
+        {
+            int amountFilledAICol = 0;
+
+            for (int col = 0; col < _gridSize; col++)
             {
-                var randomNumber = Random.Range(0, 9);
-                var gridField = grid[randomNumber].GetComponent<ClickTrigger>();
+                if (_triggers[row, col].filledByAI) amountFilledAICol++;
+            }
 
-                if (!gridField.canClick) continue;
-                gridField.canClick = false;
-                gridField.filledByAI = true;
-                AiSelects(gridField.myCoordX, gridField.myCoordY);
-                foundEmptySpot = true;
+            if (amountFilledAICol == _gridSize - 1)
+            {
+                for (int col = 0; col < _gridSize; col++)
+                {
+                    if (!_triggers[row, col].filledByAI && _triggers[row, col].canClick)
+                    {
+                        _triggers[row, col].canClick = false;
+                        _triggers[row, col].filledByAI = true;
+                        AiSelects(row, col);
+                        return;
+                    }
+                }
             }
         }
+
+        // Columns
+        for (int col = 0; col < _gridSize; col++)
+        {
+            int amountFilledAIRow = 0;
+
+            for (int row = 0; row < _gridSize; row++)
+            {
+                if (_triggers[row, col].filledByAI) amountFilledAIRow++;
+            }
+
+            if (amountFilledAIRow == _gridSize - 1)
+            {
+                for (int row = 0; row < _gridSize; row++)
+                {
+                    if (!_triggers[row, col].filledByAI && _triggers[row, col].canClick)
+                    {
+                        _triggers[row, col].canClick = false;
+                        _triggers[row, col].filledByAI = true;
+                        AiSelects(row, col);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Diagonal Left to Right
+        int amountFilledAIDiaLeft = 0;
+
+        for (int dia = 0; dia < _gridSize; dia++)
+        {
+            if (_triggers[dia, dia].filledByAI) amountFilledAIDiaLeft++;
+        }
+
+        if (amountFilledAIDiaLeft == _gridSize - 1)
+        {
+            for (int dia = 0; dia < _gridSize; dia++)
+            {
+                if (!_triggers[dia, dia].filledByAI && _triggers[dia, dia].canClick)
+                {
+                    _triggers[dia, dia].canClick = false;
+                    _triggers[dia, dia].filledByAI = true;
+                    AiSelects(dia, dia);
+                    return;
+                }
+            }
+        }
+
+        // Diagonal Right to Left
+        int amountFilledAIDiaRight = 0;
+        int rowIndexAI = 0;
+
+        for (int col = _gridSize - 1; col >= 0; col--)
+        {
+            if (_triggers[rowIndexAI, col].filledByAI) amountFilledAIDiaRight++;
+            rowIndexAI++;
+        }
+
+        rowIndexAI = 0;
+        if (amountFilledAIDiaRight == _gridSize - 1)
+        {
+            for (int col = _gridSize - 1; col >= 0; col--)
+            {
+                if (!_triggers[rowIndexAI, col].filledByAI && _triggers[rowIndexAI, col].canClick)
+                {
+                    _triggers[rowIndexAI, col].canClick = false;
+                    _triggers[rowIndexAI, col].filledByAI = true;
+                    AiSelects(rowIndexAI, col);
+                    return;
+                }
+
+                rowIndexAI++;
+            }
+        }
+
+        // Player Check
+        // Rows
+        for (int row = 0; row < _gridSize; row++)
+        {
+            int amountFilledPlayerCol = 0;
+
+            for (int col = 0; col < _gridSize; col++)
+            {
+                if (_triggers[row, col].filledByPlayer) amountFilledPlayerCol++;
+            }
+
+            if (amountFilledPlayerCol == _gridSize - 1)
+            {
+                for (int col = 0; col < _gridSize; col++)
+                {
+                    if (!_triggers[row, col].filledByPlayer && _triggers[row, col].canClick)
+                    {
+                        _triggers[row, col].canClick = false;
+                        _triggers[row, col].filledByAI = true;
+                        AiSelects(row, col);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Columns
+        for (int col = 0; col < _gridSize; col++)
+        {
+            int amountFilledPlayerRow = 0;
+
+            for (int row = 0; row < _gridSize; row++)
+            {
+                if (_triggers[row, col].filledByPlayer) amountFilledPlayerRow++;
+            }
+
+            if (amountFilledPlayerRow == _gridSize - 1)
+            {
+                for (int row = 0; row < _gridSize; row++)
+                {
+                    if (!_triggers[row, col].filledByPlayer && _triggers[row, col].canClick)
+                    {
+                        _triggers[row, col].canClick = false;
+                        _triggers[row, col].filledByAI = true;
+                        AiSelects(row, col);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Diagonal Left to Right
+        int amountFilledPlayerDia = 0;
+
+        for (int dia = 0; dia < _gridSize; dia++)
+        {
+            if (_triggers[dia, dia].filledByPlayer) amountFilledPlayerDia++;
+        }
+
+        if (amountFilledPlayerDia == _gridSize - 1)
+        {
+            for (int dia = 0; dia < _gridSize; dia++)
+            {
+                if (!_triggers[dia, dia].filledByPlayer && _triggers[dia, dia].canClick)
+                {
+                    _triggers[dia, dia].canClick = false;
+                    _triggers[dia, dia].filledByAI = true;
+                    AiSelects(dia, dia);
+                    return;
+                }
+            }
+        }
+
+        // Diagonal Right to Left
+        int amountFilledPlayerDiaRight = 0;
+        int rowIndexPlayer = 0;
+
+        for (int col = _gridSize - 1; col >= 0; col--)
+        {
+            if (_triggers[rowIndexPlayer, col].filledByPlayer) amountFilledPlayerDiaRight++;
+            rowIndexPlayer++;
+        }
+
+        rowIndexPlayer = 0;
+        if (amountFilledPlayerDiaRight == _gridSize - 1)
+        {
+            for (int col = _gridSize - 1; col >= 0; col--)
+            {
+                if (!_triggers[rowIndexPlayer, col].filledByPlayer && _triggers[rowIndexPlayer, col].canClick)
+                {
+                    _triggers[rowIndexPlayer, col].canClick = false;
+                    _triggers[rowIndexPlayer, col].filledByAI = true;
+                    AiSelects(rowIndexPlayer, col);
+                    return;
+                }
+
+                rowIndexPlayer++;
+            }
+        }
+
+        // Place in Middle (best position)
+        if (_triggers[1, 1].canClick)
+        {
+            _triggers[1, 1].canClick = false;
+            _triggers[1, 1].filledByAI = true;
+            AiSelects(1, 1);
+        }
+
         else
         {
-            // AI Hard Mode
+            CheckGridEasy();
         }
     }
 
@@ -113,42 +327,36 @@ public class TicTacToeAI : MonoBehaviour
     {
         // Horizontal
         // First Row
-        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[1].GetComponent<ClickTrigger>().filledByPlayer && grid[2].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 0].filledByPlayer && _triggers[0, 1].filledByPlayer && _triggers[0, 2].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[1].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[2].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 0].filledByAI && _triggers[0, 1].filledByAI && _triggers[0, 2].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
         }
 
         // Middle Row
-        if (grid[3].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[5].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[1, 0].filledByPlayer && _triggers[1, 1].filledByPlayer && _triggers[1, 2].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[3].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[5].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[1, 0].filledByAI && _triggers[1, 1].filledByAI && _triggers[1, 2].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
         }
 
         // Bottom Row
-        if (grid[6].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[7].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[2, 0].filledByPlayer && _triggers[2, 1].filledByPlayer && _triggers[2, 2].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[6].GetComponent<ClickTrigger>().filledByAI && grid[7].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[2, 0].filledByAI && _triggers[2, 1].filledByAI && _triggers[2, 2].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
@@ -156,42 +364,36 @@ public class TicTacToeAI : MonoBehaviour
 
         // Vertical
         // First Column
-        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[3].GetComponent<ClickTrigger>().filledByPlayer && grid[6].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 0].filledByPlayer && _triggers[1, 0].filledByPlayer && _triggers[2, 0].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[3].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[6].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 0].filledByAI && _triggers[1, 0].filledByAI && _triggers[2, 0].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
         }
 
         // Second Column
-        if (grid[1].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[7].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 1].filledByPlayer && _triggers[1, 1].filledByPlayer && _triggers[2, 1].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[1].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[7].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 1].filledByAI && _triggers[1, 1].filledByAI && _triggers[2, 1].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
         }
 
         // Third Column
-        if (grid[2].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[5].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 2].filledByPlayer && _triggers[1, 2].filledByPlayer && _triggers[2, 2].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[2].GetComponent<ClickTrigger>().filledByAI && grid[5].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 2].filledByAI && _triggers[1, 2].filledByAI && _triggers[2, 2].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
@@ -199,28 +401,24 @@ public class TicTacToeAI : MonoBehaviour
 
         // Diagonal
         // Left to Right
-        if (grid[0].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[8].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 0].filledByPlayer && _triggers[1, 1].filledByPlayer && _triggers[2, 2].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[0].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[8].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 0].filledByAI && _triggers[1, 1].filledByAI && _triggers[2, 2].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
         }
 
         // Right to Left
-        if (grid[2].GetComponent<ClickTrigger>().filledByPlayer &&
-            grid[4].GetComponent<ClickTrigger>().filledByPlayer && grid[6].GetComponent<ClickTrigger>().filledByPlayer)
+        if (_triggers[0, 2].filledByPlayer && _triggers[1, 1].filledByPlayer && _triggers[2, 0].filledByPlayer)
         {
             onPlayerWin.Invoke(0);
             playerWin = true;
         }
-        else if (grid[2].GetComponent<ClickTrigger>().filledByAI && grid[4].GetComponent<ClickTrigger>().filledByAI &&
-                 grid[6].GetComponent<ClickTrigger>().filledByAI)
+        else if (_triggers[0, 2].filledByAI && _triggers[1, 1].filledByAI && _triggers[2, 0].filledByAI)
         {
             onPlayerWin.Invoke(1);
             aiWin = true;
