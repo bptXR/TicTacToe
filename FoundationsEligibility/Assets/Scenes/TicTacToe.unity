@@ -423,10 +423,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 2
-  myCoordY: 0
+  _myCoordX: 2
+  _myCoordY: 0
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &438058092
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -484,10 +483,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 1
-  myCoordY: 0
+  _myCoordX: 1
+  _myCoordY: 0
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &488615362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -545,10 +543,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 2
-  myCoordY: 1
+  _myCoordX: 2
+  _myCoordY: 1
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &498521339
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -751,10 +748,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 2
-  myCoordY: 2
+  _myCoordX: 2
+  _myCoordY: 2
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &704061768
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1174,10 +1170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 0
-  myCoordY: 1
+  _myCoordX: 0
+  _myCoordY: 1
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &869827074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1336,10 +1331,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 0
-  myCoordY: 0
+  _myCoordX: 0
+  _myCoordY: 0
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &933829468
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1806,10 +1800,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 1
-  myCoordY: 1
+  _myCoordX: 1
+  _myCoordY: 1
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &1115226685
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2010,10 +2003,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 0
-  myCoordY: 2
+  _myCoordX: 0
+  _myCoordY: 2
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &1300775588
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2071,10 +2063,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8557b1878407fba4abbb043be6e98e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCoordX: 1
-  myCoordY: 2
+  _myCoordX: 1
+  _myCoordY: 2
   canClick: 0
-  filledByPlayer: 0
 --- !u!65 &1375841068
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2678,38 +2669,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e44c8f7c5d7b6a42bcaf901d6bca296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPlayerTurn: 1
-  maxRounds: 9
-  currentRound: 1
-  aiState: 1
-  gridSize: 3
-  playerState: 2
-  xPrefab: {fileID: 7414302633889650939, guid: a450fd114cd7d1a478caad21517a2ac9, type: 3}
-  oPrefab: {fileID: 7864686030223180920, guid: f4dc0bc95f6576a40a4d10ac0b905c6a, type: 3}
-  grid:
-  - {fileID: 933829465}
-  - {fileID: 869827071}
-  - {fileID: 1300775585}
-  - {fileID: 488615359}
-  - {fileID: 1115226682}
-  - {fileID: 1375841065}
-  - {fileID: 438058089}
-  - {fileID: 498521336}
-  - {fileID: 704061765}
-  onGameStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1570885029}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  _aiState: 1
+  _playerState: 2
+  _xPrefab: {fileID: 7414302633889650939, guid: a450fd114cd7d1a478caad21517a2ac9,
+    type: 3}
+  _oPrefab: {fileID: 7864686030223180920, guid: f4dc0bc95f6576a40a4d10ac0b905c6a,
+    type: 3}
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:
@@ -2735,6 +2700,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  onGameStarted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1570885029}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  isPlayerTurn: 1
 --- !u!4 &2053529901
 Transform:
   m_ObjectHideFlags: 0

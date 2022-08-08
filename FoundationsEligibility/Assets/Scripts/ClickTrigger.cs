@@ -1,15 +1,12 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ClickTrigger : MonoBehaviour
 {
 	private TicTacToeAI _ai;
 
-	public int myCoordX;
-	public int myCoordY;
-	public bool canClick;
-	public bool filledByPlayer;
-	public bool filledByAI;
+	[SerializeField] private int _myCoordX;
+	[SerializeField] private int _myCoordY;
+	[SerializeField] private bool canClick;
 
 	private void Awake()
 	{
@@ -29,7 +26,7 @@ public class ClickTrigger : MonoBehaviour
 
 	private void AddReference()
 	{
-		_ai.RegisterTransform(myCoordX, myCoordY, this);
+		_ai.RegisterTransform(_myCoordX, _myCoordY, this);
 		canClick = true;
 	}
 
@@ -37,8 +34,6 @@ public class ClickTrigger : MonoBehaviour
 	{
 		if (!canClick || !_ai.isPlayerTurn) return;
 		canClick = false;
-		filledByPlayer = true;
-		_ai.PlayerSelects(myCoordX, myCoordY);
-		if(_ai.currentRound < 9 && !_ai.playerWin) _ai.CalculateMove();
+		_ai.PlayerSelects(_myCoordX, _myCoordY);
 	}
 }
