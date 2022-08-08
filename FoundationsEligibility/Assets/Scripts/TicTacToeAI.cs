@@ -95,8 +95,8 @@ public class TicTacToeAI : MonoBehaviour
 
         while (!foundEmptySpot)
         {
-            int randomRow = Random.Range(0, 9);
-            int randomCol = Random.Range(0, 9);
+            int randomRow = Random.Range(0, 3);
+            int randomCol = Random.Range(0, 3);
 
             if (!_triggers[randomRow, randomCol].canClick) continue;
             _triggers[randomRow, randomCol].canClick = false;
